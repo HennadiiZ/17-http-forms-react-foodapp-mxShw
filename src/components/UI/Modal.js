@@ -26,10 +26,7 @@ const Modal = (props) => {
     //     portalElement
     //   )}
     // </Fragment>
-
-
     <ModalOverlay>{props.children}</ModalOverlay>
-
   );
 };
 
