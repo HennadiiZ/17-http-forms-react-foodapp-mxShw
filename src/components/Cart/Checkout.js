@@ -1,8 +1,18 @@
 import classes from './Checkout.module.css';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+
+const isEmpty = value => value.trim() === '';
+const isNotFiveChars = value => value.trim().length !== 5;
 
 const Checkout = (props) => {
+  const [formInputsValidity, setFormInputsValidity] = useState({
+    name: true,
+    street: true,
+    city: true,
+    postalCode: true
+  }); 
+
   const nameInputRef = useRef();
   const streetInputRef = useRef();
   const postalInputRef = useRef();
@@ -15,6 +25,30 @@ const Checkout = (props) => {
     const enteredStreet = streetInputRef.current.value;
     const enteredPostal = postalInputRef.current.value;
     const enteredCity = cityInputRef.current.value;
+
+    const enteredNameIsValid = !isEmpty(enteredName);
+    const enteredStreetIsValid = !isEmpty(enteredStreet);
+    const enteredPostalIsValid = !isNotFiveChars(enteredPostal);
+    const enteredCityIsValid = !isEmpty(enteredCity);
+
+    setFormInputsValidity({
+      name: enteredNameIsValid,
+      street: enteredStreetIsValid,
+      city: enteredCityIsValid,
+      postalCode: enteredPostalIsValid
+    })
+
+    const formIsValid = 
+      enteredNameIsValid && 
+      enteredStreetIsValid && 
+      enteredPostalIsValid && 
+      enteredCityIsValid; 
+
+    if (formIsValid) {
+      // submit the cart data;
+      return;
+    }  
+      // submit the cart data;
   };
 
   return (
@@ -22,18 +56,22 @@ const Checkout = (props) => {
       <div className={classes.control}>
         <label htmlFor='name'>Your Name</label>
         <input type='text' id='name' ref={nameInputRef}/>
+        {!formInputsValidity.name && <p>Enter your name</p>}
       </div>
       <div className={classes.control}>
         <label htmlFor='street'>Street</label>
         <input type='text' id='street' ref={streetInputRef}/>
+        {!formInputsValidity.street && <p>Enter your street</p>}
       </div>
       <div className={classes.control}>
         <label htmlFor='postal'>Postal Code</label>
         <input type='text' id='postal' ref={postalInputRef}/>
+        {!formInputsValidity.postalCode && <p>Enter your postal code - 5 digits</p>}
       </div>
       <div className={classes.control}>
         <label htmlFor='city'>City</label>
         <input type='text' id='city' ref={cityInputRef}/>
+        {!formInputsValidity.city && <p>Enter your city</p>}
       </div>
       <div className={classes.actions}>
         <button type='button' onClick={props.onCancel}>
