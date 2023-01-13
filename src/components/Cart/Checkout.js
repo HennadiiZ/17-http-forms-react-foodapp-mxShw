@@ -83,7 +83,7 @@ const Checkout = (props) => {
         <button type='button' onClick={props.onCancel}>
           Cancel
         </button>
-        <button className={classes.submit}>Confirm</button>
+        <button className={classes.submit} onClick={props.onConfirm}>Confirm</button>
       </div>
     </form>
   );
